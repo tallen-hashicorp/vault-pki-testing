@@ -18,6 +18,10 @@ vault write auth/approle/role/client \
 
 export ROLEID=$(vault read -field=role_id auth/approle/role/client/role-id)
 export SECRETID=$(vault write -field=secret_id -f auth/approle/role/client/secret-id)
+
+vault write auth/approle/login \
+    role_id=$ROLEID \
+    secret_id=$SECRETID
 ```
 
 ### Configure PKI
@@ -81,17 +85,17 @@ cd ..
 ## Run Server
 ```bash
 cd Server
+
+## Ensure you habve rne ROLEID and SECRETID set
+export ROLEID=$(vault read -field=role_id auth/approle/role/client/role-id)
+export SECRETID=$(vault write -field=secret_id -f auth/approle/role/client/secret-id)
+
 node index.js
 ```
 
 ## Run Client
 ```bash
 cd Client
-
-## Ensure you habve rne ROLEID and SECRETID set
-export ROLEID=$(vault read -field=role_id auth/approle/role/client/role-id)
-export SECRETID=$(vault write -field=secret_id -f auth/approle/role/client/secret-id)
-
 node index.js
 ```
 

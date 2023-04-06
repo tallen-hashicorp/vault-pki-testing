@@ -25,6 +25,7 @@ vault write auth/approle/login \
 ```
 
 ### Configure PKI
+**You can use either the root or int certs in your keychain**
 
 #### Configure root CA
 ```bash

@@ -1,4 +1,5 @@
 # vault-pki-testing
+[https://developer.hashicorp.com/vault/tutorials/secrets-management/pki-engine](https://developer.hashicorp.com/vault/tutorials/secrets-management/pki-engine)
 
 ## Configure Vault
 
@@ -26,6 +27,9 @@ vault write auth/approle/login \
 
 ### Configure PKI
 **You can use either the root or int certs in your keychain**
+```bash
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain root_2022_ca.crt
+```
 
 #### Configure root CA
 ```bash
@@ -42,6 +46,10 @@ vault write pki/config/urls \
      issuing_certificates="$VAULT_ADDR/v1/pki/ca" \
      crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
 
+```
+
+```bash
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain intermediate.cert.pem
 ```
 
 #### Configure intermediate CA
@@ -84,6 +92,7 @@ cd ..
 ```
 
 ## Run Server
+This will start the server on: https://127.0.0.1:8443/
 ```bash
 cd Server
 
@@ -93,6 +102,7 @@ export SECRETID=$(vault write -field=secret_id -f auth/approle/role/client/secre
 
 node index.js
 ```
+
 
 ## Run Client
 ```bash
